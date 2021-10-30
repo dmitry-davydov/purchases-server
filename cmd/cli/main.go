@@ -28,7 +28,7 @@ func main() {
 
 	service := parser.NewParserService()
 	purchase, err := service.Parse(fp, totalPrice)
-	log.Print("tut")
+
 	if err != nil {
 		log.Panic(err.Error())
 	}

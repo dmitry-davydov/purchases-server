@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-type Taxcom struct{
+type Taxcom struct {
 	geocoder geo.Geocoder
 }
 
@@ -92,6 +92,7 @@ func (t *Taxcom) Parse(request ParseRequest) (*models.Purchase, error) {
 			PriceForOneItem: priceForOne,
 			TotalPrice:      priceForOne * quantity,
 			VAT:             vat,
+			Category:        "Продукты",
 		}
 
 		purchase.Products = append(purchase.Products, product)
@@ -137,7 +138,8 @@ func (t *Taxcom) Parse(request ParseRequest) (*models.Purchase, error) {
 	if location, err := t.geocoder.Geocode(purchase.Shop.Address); err != nil {
 		log.Print(err.Error())
 	} else {
-		log.Print(location)
+		purchase.Shop.Coordinates.Longitude = location.Lng
+		purchase.Shop.Coordinates.Latitude = location.Lat
 	}
 
 	return &purchase, nil
